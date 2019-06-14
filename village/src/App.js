@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 
 import './App.css';
 import SmurfForm from './components/SmurfForm';
@@ -52,15 +53,26 @@ class App extends Component {
   // You'll need to make sure you have the right properties on state and pass them down to props.
   render() {
     return (
+
+    <Router>
       <div className="App">
-        <SmurfForm
-        postNewSmurf={this.postNewSmurf}
+        <nav>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/smurf-form">Add new Smurf to village</NavLink>
+        </nav>
+
+        <Route
+        path="/"
+        exact
+        render={props => <Smurfs {...props}  smurfs={this.state.smurfs} />}
         />
-        <Smurfs
-        smurfs={this.state.smurfs}
+
+        <Route
+        path = '/smurf-form'
+        render={props => <SmurfForm {...props} postNewSmurf={this.postNewSmurf}/>}
         />
-        haha
       </div>
+    </Router>
     );
   }
 }
