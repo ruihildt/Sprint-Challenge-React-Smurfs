@@ -25,12 +25,25 @@ class App extends Component {
         });
     } finally {
       //Confirm data is loaded
-      this.state.smurfs && console.log('Smurf data successfully loaded');
+      // this.state.smurfs && console.log('Smurf data successfully loaded');
     }
   }
 
   componentDidMount() {
     this.fetchFriend();
+  }
+
+  getAllSmurfs = () => {
+    axios.get(smurfAPI)
+    .then(res => {
+      this.setState({ smurfs: res.data });
+    })
+  }
+
+  postNewSmurf = (newSmurf) => {
+    axios.post(smurfAPI, newSmurf)
+    .then(() => this.getAllSmurfs())
+    .catch(err => console.log(err));
   }
 
 
@@ -40,8 +53,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SmurfForm />
-        <Smurfs smurfs={this.state.smurfs} />
+        <SmurfForm
+        postNewSmurf={this.postNewSmurf}
+        />
+        <Smurfs
+        smurfs={this.state.smurfs}
+        />
         haha
       </div>
     );
